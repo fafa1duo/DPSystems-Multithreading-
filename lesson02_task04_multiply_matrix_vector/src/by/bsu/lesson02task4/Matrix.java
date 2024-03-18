@@ -1,56 +1,58 @@
 package by.bsu.lesson02task4;
 
 public class Matrix {
-    private int[][] a;
-    private int n;
-     private int m;
-public Matrix(int nn, int mm) {
-     n = nn;
-     m = mm;
-//creation and filling with random values
-     a = new int[n][m];
-     for (int i = 0; i < n; i++) {
-        for (int j = 0; j < m; j++) {
-          a[i][j] = (int)(Math.random() * 10);
- }
- }
-    show();
-}
-public Matrix(int nn, int mm, int k) {
-     n = nn;
-     m = mm;
-     a = new int[n][m];
-    for (int i = 0; i < n; i++) {
-       for (int j = 0; j < m; j++) {
-       a[i][j] = k;
- }
- }
-          if(k != 0) {
-        show();
- }
- }
-       public void show() {
-       System.out.println("matrix : " + a.length + " by " + a[0].length);
-     for (int i = 0; i < a.length; i++) {
-     for (int j = 0; j < a[0].length; j++) {
-    System.out.print(a[i][j] + " ");
-     }
-System.out.println();
-}
-}
-public static void main(String[] args) {
-int n = 2, m = 3, l = 4;
-Matrix p = new Matrix(n, m);
-Matrix q = new Matrix(m, l);
-Matrix r = new Matrix(n, l, 0);
-for (int i = 0; i < p.a.length; i++) {
-for (int j = 0; j < q.a[0].length; j++) {
-for (int k = 0; k < p.a[0].length; k++) {
-r.a[i][j] += p.a[i][k] * q.a[k][j];
-}
-}
-}
-System.out.println("matrix multiplication result: ");
-r.show();
-}
+  private int[][] values;
+
+  public Matrix(int rows, int columns) {
+    values = new int[rows][columns];
+  }
+
+  public Matrix(int row, int column, int valueToFill) {
+    values = new int[row][column];
+    for (int i = 0; i < row; i++) {
+      for (int j = 0; j < column; j++) {
+        values[i][j] = valueToFill;
+      }
+    }
+  }
+
+  public int getRows() {
+	  return values.length;
+  }
+  public int getColumns() {
+	  return values[0].length;
+  }
+  public int getItem(int i,int j) throws MatrixException {
+	  if (checkRange(i,j)) {
+		  return values[i][j];
+		  
+	  }else
+	  throw new MatrixException("indexes are not correct");
+  }
+  public void setItem(int i,int j,int value) {
+	  values[i][j]=value;
+  }
+  
+  private boolean checkRange(int i, int j) {
+	  if (i < 0 || i > values.length -1
+			  || j < 0 
+			  || j > values[0].length) {
+	  return false;
+	  } else {
+	  return true;
+	  }
+  }
+	@Override
+	public String toString() {
+		final String BLANK = " ";
+		StringBuilder str = new StringBuilder("\nMatrix: "+
+		values.length+"x"+values[0].length + "\n");
+		for(int []row:values) {
+			for(int values:row)
+			str.append(values).append(BLANK);
+			
+			str.append("\n");
+		}
+		return str.toString();
+	}
 }

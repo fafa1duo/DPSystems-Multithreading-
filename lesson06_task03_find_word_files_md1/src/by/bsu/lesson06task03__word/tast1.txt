@@ -1,0 +1,5 @@
+word
+aabb 
+ab
+ccd
+a

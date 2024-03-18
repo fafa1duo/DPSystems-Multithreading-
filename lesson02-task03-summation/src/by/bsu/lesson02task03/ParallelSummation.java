@@ -107,45 +107,73 @@ public class ParallelSummation {
 
 		// sum of elements calculated using threads
 		// 并行计算总和，测量时间
-		int numberThreads = 2;
-		long startTime = System.currentTimeMillis();
-		// create threads
-		// 创建线程
-		
-		SummationThread[] worker = new SummationThread[numberThreads];
-		int start = 0;
-		int delta = MAX_SIZE / numberThreads; // N = 10, num = 2;
-		int end = delta; // delta = 5
-		for (int i = 0; i < numberThreads; ++i) {
+		// sum of elements calculated using 2 threads
+        int numberThreads = 2;
+        long startTime = System.currentTimeMillis();
+        SummationThread[] worker = new SummationThread[numberThreads];
+        int start = 0;
+        int delta = MAX_SIZE / numberThreads;
+        int end = delta;
+        for (int i = 0; i < numberThreads; ++i) {
+            worker[i] = new SummationThread(array, i, start, end);
+            start += delta;
+            end += delta;
+        }
 
-			worker[i] = new SummationThread(array, i, start, end);
-			start += delta; // 5
-			end += delta; // 10
-		}
+        for (int i = 0; i < numberThreads; ++i) {
+            worker[i].start();
+        }
 
-		for (int i = 0; i < numberThreads; ++i) {
-			worker[i].start();
+        for (int i = 0; i < numberThreads; ++i) {
+            try {
+                worker[i].join();
+            } catch (InterruptedException e) {
+            }
+        }
 
-		}
-		// join()
-		for (int i = 0; i < numberThreads; ++i) {
-			try {
-				worker[i].join();
-			} catch (InterruptedException e) {
-			}
-		}
+        long sum2Threads = 0;
+        for (SummationThread thread : worker) {
+            sum2Threads += thread.getResult();
+        }
+        long finishTime = System.currentTimeMillis();
+        long elapsedTime = finishTime - startTime;
 
-		// total sum
-		long sum = 0;
-		for (SummationThread thread : worker) {
-			sum += thread.getResult();
-		}
-		long finishTime = System.currentTimeMillis();
-		long elapsedTime = finishTime - startTime;
+        System.out.println("Parallel code with 2 threads: sum = " + sum2Threads + 
+                " time = " + elapsedTime);
 
-		System.out.println("Parallel code: sum = " + sum + 
-				" time = " + elapsedTime);
+		 // sum of elements calculated using 4 threads
+        numberThreads = 4;
+        startTime = System.currentTimeMillis();
+        worker = new SummationThread[numberThreads];
+        start = 0;
+        delta = MAX_SIZE / numberThreads;
+        end = delta;
+        for (int i = 0; i < numberThreads; ++i) {
+            worker[i] = new SummationThread(array, i, start, end);
+            start += delta;
+            end += delta;
+        }
 
+        for (int i = 0; i < numberThreads; ++i) {
+            worker[i].start();
+        }
+
+        for (int i = 0; i < numberThreads; ++i) {
+            try {
+                worker[i].join();
+            } catch (InterruptedException e) {
+            }
+        }
+
+        long sum4Threads = 0;
+        for (SummationThread thread : worker) {
+            sum4Threads += thread.getResult();
+        }
+        finishTime = System.currentTimeMillis();
+        elapsedTime = finishTime - startTime;
+
+        System.out.println("Parallel code with 4 threads: sum = " + sum4Threads + 
+                " time = " + elapsedTime);
 	}
 
 }

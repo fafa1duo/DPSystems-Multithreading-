@@ -1,7 +1,15 @@
 package by.bsu.lesson01task01;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class BaseThreadMain {
+	
+	 private static final Logger logger = LogManager.getLogger(BaseThreadMain.class);
+	
 public static void main(String[] args) {
+	
+	logger.info("Main app atarted");
 WalkThread walk = new WalkThread(); // new thread object
 Thread talk = new Thread(new TalkThread()); // new thread object
 talk.start(); // start of thread
@@ -12,9 +20,9 @@ walk.start(); // start of thread
 System.out.println("Thread tslk has start:"+ talk.getState());
 
 //try {
-//	Thread.currentThread().sleep(1000);
-//}catch(InterruptedExcep)
+//	Thread.currentThread().sleep(10);
+//}catch(InterruptedExcepException e)
 
-System.out.println("Main app completes");
+logger.info("Main app completes");
 }
 }

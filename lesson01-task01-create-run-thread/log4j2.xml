@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+  <Properties>
+  <property name="pattern_1">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{5} - %msg%n
+  
+   <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+  </property>
+  </Properties>
+
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="${console-pattern}"/>
+    </Console>
+    <File name="TxtFile" fileName="logs/log.txt" bufferedIO="true">
+<PatternLayout pattern="${pattern_file}"/>
+</File>
+
+<RollingFile name="File" fileName="Log.Log.txt" immediateFlush="false"
+append="false" filePattern="Log/Log_/%d{dd-MM-yyyy}.txt">
+  </RollingFile>
+  </Appenders>
+  
+ 
+  <Loggers>
+    <Root level="trace">
+      <AppenderRef ref="Console"/>
+    </Root>
+    <Logger name="BaseThreadMain" level="trace" additivity="true">
+    <AppenderRef ref="TxtFile"/>
+    </Logger>
+  </Loggers>
+</Configuration>
